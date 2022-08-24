@@ -1,2 +1,2 @@
 # icTransporte
-dados referente a iniciação científica
+dados referentes a iniciação científica
