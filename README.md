@@ -6,7 +6,7 @@
 
 #### -SoftwareConcatenacao
 
-Softwares desenvolvidos nas linguagens C e Python. Para correta execução, é necessário incluir dentro do diretório ( contendo os arquivos do software ), uma pasta com os vídeos a serem concatenados  e o arquivo de GPS disponibilizado pela câmera 70mai A800.  
+Softwares desenvolvidos nas linguagens C e Shell Script. Para correta execução, é necessário incluir dentro do diretório ( contendo os arquivos do software ), uma pasta com os vídeos a serem concatenados  e o arquivo de GPS disponibilizado pela câmera 70mai A800.  
 Para executar o programa basta digitar no terminal:  
 ~~~Bash
 ./processaDados.sh “Condutor” “Pasta”
