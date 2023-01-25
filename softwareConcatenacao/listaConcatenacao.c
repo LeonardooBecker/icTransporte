@@ -164,7 +164,7 @@ int main(int argc, char **argv)
 
             // Busca em todos os arquivos de video os que devem ser escritos dentro do arquivo aberto atualmente
 
-            for (j = (indicaSeparacao[k]); j < (indicaSeparacao[(k+1)]); j++)
+            for (j = (indicaSeparacao[k]); j < video; j++)
             {
 
                 strcpy(linhaBackup, linha[j]);
