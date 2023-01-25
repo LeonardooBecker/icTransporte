@@ -230,7 +230,9 @@ void escrevePlanilha(dados_t infos, FILE *arqResul)
     fprintf(arqResul, "%.4f;", infos.aceleracao / 3.6);                // ACEL_MS2
     fprintf(arqResul, ";");                                            // HEADING
     fprintf(arqResul, "%s;", infos.altitude);                          // ALTITUDE
-    fprintf(arqResul, " ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;");             // 16 colunas em branco
+    fprintf(arqResul, " ; ; ; ; ; ; ; ; ;");
+    fprintf(arqResul, "%s", infos.nomeArquivo);
+    fprintf(arqResul, " ; ; ; ; ; ;");
     // fprintf(arqResul, "%s;", infos.tempoCompleto);
     // fprintf(arqResul, "%s", infos.nomeArquivo);
     fprintf(arqResul, "\n");

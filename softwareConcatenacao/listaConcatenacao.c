@@ -41,10 +41,16 @@ int main(int argc, char **argv)
     char linha[MAX_VIDEOS][MAX_PALAVRA];
     char linhaBackup[MAX_PALAVRA];
     char nomeArquivo[MAX_PALAVRA];
+    char gpsFileName[MAX_PALAVRA];
+    char semVideo[MAX_VIDEOS][MAX_PALAVRA];
+    char nomeAnterior[MAX_PALAVRA];
+    FILE *gpsFile;
     int video = 0;
     int horaAnterior = 0;
     int horaAtual;
-    int videosDiferentes = 0;
+    int cont=0;
+;    int videosDiferentes = 0;
+
     int indicaSeparacao[MAX_VIDEOS];
 
     strcpy(diretorio, argv[1]);
@@ -65,7 +71,9 @@ int main(int argc, char **argv)
 
         else if (((de->d_name[0]) != 78) && ((de->d_name[1]) != 79))
         {
-            printf("Arquivo invalido!\n");
+            strcpy(gpsFileName,diretorio);
+            strcat(gpsFileName,"/");
+            strcat(gpsFileName,de->d_name);
         }
 
         // Copia o nome de todos os vídeos existentes no diretório passado para a variavel "linha"
@@ -77,6 +85,7 @@ int main(int argc, char **argv)
             {
                 i++;
             }
+            // 4 pois esta procurando os arquivos .mp4 ( 4 como último caractere )
             if (de->d_name[(i - 1)] == '4')
             {
                 strcpy(linha[video], de->d_name);
@@ -115,10 +124,9 @@ int main(int argc, char **argv)
         ptr = strtok(linhaBackup, "-");
         ptr = strtok(NULL, "-");
         horaAtual = converteNumero(atoi(ptr));
-        printf("Hora Atual: %d // Hora Anterior: %d\n",horaAtual,horaAnterior);
         if (horaAnterior == 0)
             horaAnterior = horaAtual;
-        if (abs(horaAtual - horaAnterior) > 185) 
+        if (abs(horaAtual - horaAnterior) > 185)
         {
             videosDiferentes++;
             indicaSeparacao[j] = i;
@@ -126,9 +134,59 @@ int main(int argc, char **argv)
         }
         horaAnterior = horaAtual;
     }
-    for(i=0;i<j;i++)
+
+    gpsFile = fopen(gpsFileName, "r");
+    if (!gpsFile)
     {
-        printf("%d\n",indicaSeparacao[i]);
+        perror("Arquivo não encontrado");
+        exit(1);
+    }
+    cont=0;
+    while(!feof(gpsFile))
+    {
+        if (fgets(linhaBackup, MAX_PALAVRA, gpsFile))
+        {
+            if(strlen(linhaBackup)>10)
+            {
+                ptr=strtok(linhaBackup,",");
+                for(i=0;i<9;i++)
+                    ptr=strtok(NULL,",");
+                
+                if(strcmp(ptr,linha[0])==0)
+                    break;
+                else
+                {
+                    //printf("%s",ptr);
+                    if(cont==0)
+                    {
+                        strcpy(semVideo[0],ptr);
+                        strcpy(nomeAnterior,ptr);
+                        cont++;
+                    }
+                    else
+                    {
+                        if(strcmp(ptr,nomeAnterior)!=0)
+                        {   
+                            strcpy(semVideo[cont],ptr);
+                            strcpy(nomeAnterior,ptr);
+                            cont++;
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    fclose(gpsFile);
+    gpsFile=fopen("NO_semVideo.txt","w");
+    if (!gpsFile)
+    {
+        perror("Arquivo não encontrado");
+        exit(1);
+    }
+    for(i=0;i<cont;i++)
+    {
+        fprintf(gpsFile,"file %s\n",semVideo[i]);
     }
 
     while (videosDiferentes >= 0)
@@ -195,7 +253,6 @@ int main(int argc, char **argv)
             }
             if (vazio)
             {
-                printf("vazio");
                 remove(nomeArquivo);
             }
             fclose(arqResultado);
