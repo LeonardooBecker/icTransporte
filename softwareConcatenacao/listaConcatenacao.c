@@ -234,7 +234,7 @@ int main(int argc, char **argv)
                     horaAnterior = horaAtual;
 
                 // Caso a diferença de tempo seja maior que 3 minutos, quebra o laço partindo para o proximo arquivo
-                if ((horaAtual - horaAnterior) > 182)
+                if (abs(horaAtual - horaAnterior) > 182)
                     break;
 
                 // Confere se o caractere que diferencia qual das cameras eh igual ao caracter do arquivo resultante aberto atual
