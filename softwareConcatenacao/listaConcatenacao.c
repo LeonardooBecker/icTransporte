@@ -28,6 +28,13 @@ int converteNumero(int valor)
     return horas * 3600 + minutos * 60 + segundos;
 }
 
+int confereAno(char linha[MAX_PALAVRA])
+{
+    if((linha[2]==49) || (linha[3]==57) || (linha[4]==55) || (linha[5]==48))
+        return 0;
+    return 1;
+}
+
 int main(int argc, char **argv)
 {
     int i = 0;
@@ -227,6 +234,8 @@ int main(int argc, char **argv)
 
                 strcpy(linhaBackup, linha[j]);
                 ptr = strtok(linhaBackup, "-");
+                if(!confereAno(ptr))
+                    break;
                 ptr = strtok(NULL, "-");
                 horaAtual = converteNumero(atoi(ptr));
 

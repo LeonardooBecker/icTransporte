@@ -259,7 +259,7 @@ int main(int argc, char **argv)
     strcpy(infos.condutor, argv[1]);
     strcpy(arquivo, argv[2]);
 
-    infos.trip = "trip";
+    infos.trip = "";
     infos.altitude = "";
 
     arqEntrada = fopen(arquivo, "r");
