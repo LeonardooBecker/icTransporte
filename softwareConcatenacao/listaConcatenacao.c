@@ -30,7 +30,7 @@ int converteNumero(int valor)
 
 int confereAno(char linha[MAX_PALAVRA])
 {
-    if((linha[2]==49) || (linha[3]==57) || (linha[4]==55) || (linha[5]==48))
+    if((linha[2]!=50) || (linha[3]!=48) || (linha[4]!=50) || (linha[5]<50))
         return 0;
     return 1;
 }
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
         horaAtual = converteNumero(atoi(ptr));
         if (horaAnterior == 0)
             horaAnterior = horaAtual;
-        if (abs(horaAtual - horaAnterior) > 185)
+        if ((abs(horaAtual - horaAnterior) > 185) || ((abs(horaAtual - horaAnterior) < 175) && (abs(horaAtual-horaAnterior)!=0)))
         {
             videosDiferentes++;
             indicaSeparacao[j] = i;
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
                     horaAnterior = horaAtual;
 
                 // Caso a diferença de tempo seja maior que 3 minutos, quebra o laço partindo para o proximo arquivo
-                if (abs(horaAtual - horaAnterior) > 182)
+                if ((abs(horaAtual - horaAnterior) > 185) || ((abs(horaAtual - horaAnterior) < 175) && (abs(horaAtual-horaAnterior)!=0)))
                     break;
 
                 // Confere se o caractere que diferencia qual das cameras eh igual ao caracter do arquivo resultante aberto atual

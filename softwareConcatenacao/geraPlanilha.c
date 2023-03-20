@@ -209,12 +209,24 @@ void inicializaTabela(FILE *arqResul)
     fprintf(arqResul, "LIMITE_VEL\n");
 }
 
+char *substituir_ponto_por_virgula(float dado) {
+    char *str=malloc(sizeof(char)*MAX_PALAVRA);
+    sprintf(str,"%f",dado);
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] == '.') {
+            str[i] = ',';
+        }
+    }
+    return str;
+}
+
 // Função chamada a cada repetição do laço  que preenche a planilha com os dados obtidos
 void escrevePlanilha(dados_t infos, FILE *arqResul)
 {
+    char valorAux[MAX_PALAVRA];
     fprintf(arqResul, "%s;", infos.condutor);                          // DRIVER
-    fprintf(arqResul, "%f;", infos.longitude);                         // LONGITUDE
-    fprintf(arqResul, "%f;", infos.latitude);                          // LATITUDE
+    fprintf(arqResul, "%s;", substituir_ponto_por_virgula(infos.longitude));                         // LONGITUDE
+    fprintf(arqResul, "%s;", substituir_ponto_por_virgula(infos.latitude));                          // LATITUDE
     fprintf(arqResul, ";");                                            // DAY
     fprintf(arqResul, "%d/%02d/%d;", infos.dia, infos.mes, infos.ano); // DAY CORRIGIDO
     fprintf(arqResul, ";");                                            // 03:00:00
@@ -225,9 +237,9 @@ void escrevePlanilha(dados_t infos, FILE *arqResul)
     fprintf(arqResul, ";");                                            // M
     fprintf(arqResul, "%d;", infos.diffSegundos);                      // S
     fprintf(arqResul, "%d;", infos.soma_acumulada);                    // TIME_ACUM
-    fprintf(arqResul, "%.2f;", infos.velocidadeMph);                   // SPD_MPH
-    fprintf(arqResul, "%.4f;", infos.velocidadeKmh);                   // SPM_KMH
-    fprintf(arqResul, "%.4f;", infos.aceleracao / 3.6);                // ACEL_MS2
+    fprintf(arqResul, "%s;", substituir_ponto_por_virgula(infos.velocidadeMph));                   // SPD_MPH
+    fprintf(arqResul, "%s;", substituir_ponto_por_virgula(infos.velocidadeKmh));                   // SPM_KMH
+    fprintf(arqResul, "%s;", substituir_ponto_por_virgula(infos.aceleracao / 3.6));                // ACEL_MS2
     fprintf(arqResul, ";");                                            // HEADING
     fprintf(arqResul, "%s;", infos.altitude);                          // ALTITUDE
     fprintf(arqResul, " ; ; ; ; ; ; ; ; ;");
