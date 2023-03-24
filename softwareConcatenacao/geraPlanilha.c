@@ -223,7 +223,6 @@ char *trocaPontoVirgula(float dado) {
 // Função chamada a cada repetição do laço  que preenche a planilha com os dados obtidos
 void escrevePlanilha(dados_t infos, FILE *arqResul)
 {
-    char valorAux[MAX_PALAVRA];
     fprintf(arqResul, "%s;", infos.condutor);                          // DRIVER
     fprintf(arqResul, "%s;", trocaPontoVirgula(infos.longitude));                         // LONGITUDE
     fprintf(arqResul, "%s;", trocaPontoVirgula(infos.latitude));                          // LATITUDE

@@ -30,7 +30,8 @@ int converteNumero(int valor)
 
 int confereAno(char linha[MAX_PALAVRA])
 {
-    if((linha[2]!=50) || (linha[3]!=48) || (linha[4]!=50) || (linha[5]<50))
+    // Se ano menor que 2020 retorna 0
+    if((linha[2]!=50) || (linha[3]!=48) || (linha[4]!=50) || (linha[5]<48))
         return 0;
     return 1;
 }
