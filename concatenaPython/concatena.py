@@ -20,12 +20,12 @@ for card in cards:
     pastas = os.listdir(diretorio)
     for elem in pastas:
         if (("Back" in elem) or ("back" in elem)):
-            diretorioBack = diretorio+'/'+elem
-            data = os.listdir(f'{diretorio}/{elem}')
+            diretorioBack = f"{diretorio}/{elem}"
+            data = os.listdir(f"{diretorio}/{elem}")
             elementos.extend(data)
         if (("Front" in elem) or ("front" in elem)):
-            diretorioFront = diretorio+'/'+elem
-            data = os.listdir(f'{diretorio}/{elem}')
+            diretorioFront = f"{diretorio}/{elem}"
+            data = os.listdir(f"{diretorio}/{elem}")
             elementos.extend(data)
         if ("GPS" in elem):
             elementos.extend([elem])
@@ -88,7 +88,8 @@ for card in cards:
     # Converte para set para tirar repetição
     vetSemVideos = set(vetSemVideos)
     vetSemVideos = sorted(list(vetSemVideos))
-    tudao.append(vetSemVideos)
+    if(len(vetSemVideos)>0):
+        tudao.append(vetSemVideos)
 
 
     # Cria o arquivo que contem todos os dados de GPS que nao possuem video
@@ -137,7 +138,7 @@ for card in cards:
                     tudao.append(vetAux)
                     vetAux = []
                     vetAux.append(vetor[i])
-
+                    dataAnterior=dataAtual
             # Vídeo iguais
             else:
                 vetAux.append(vetor[i])
@@ -160,15 +161,15 @@ for card in cards:
     #             arquivo.write('file '+elemento+'\n')
 
 
-    # Concatenacao de videos
+    # Concatenacao de videos    
     def concat(arquivoInput,output_file):
         playlist_file='playlist.txt'
         with open(playlist_file,'w') as pFile:
             for file in arquivoInput:
                 if("B" in file):
-                    pFile.write(f"file {diretorioBack}/{file}\n")
+                    pFile.write(f"file '{diretorioBack}'/{file}\n")
                 else:
-                    pFile.write(f"file {diretorioFront}/{file}\n")
+                    pFile.write(f"file '{diretorioFront}'/{file}\n")
         command = ['ffmpeg', '-f', 'concat', '-safe', '0', '-i', playlist_file, '-c', 'copy', output_file]
         subprocess.run(command)
         # Remover o arquivo de lista de reprodução
@@ -363,8 +364,6 @@ for card in cards:
                     arquivo.write(str(dado))
 
 
-    # Buscar arquivo GPS
-
     # Para cada vetor no conjunto de vetores de vídeos
     for lista in tudao:
         matriz = []
@@ -385,13 +384,14 @@ for card in cards:
                                     preencheVetor(matriz, line)
                 preenchePlanilha(gpsFile, matriz)
 
-            if (lista[0] == vetSemVideos[0]):
+            if (len(vetSemVideos)>0 and lista[0] == vetSemVideos[0]):
                 os.replace(arquivo, f'{diretorio}/NO-semVideo.csv')
             else:
-                data = convert_unix_timestamp(int(novoNome))
-                data = toDict(data)
-                novoNome = f"{diretorio}/NO{data['ano']}{data['mes']}{data['dia']}-{arquivo.split('-')[1]}-{data['hora']}{data['minuto']}{data['segundo']}.csv"
-                os.replace(arquivo, novoNome)
+                if(novoNome!=""):
+                    data = convert_unix_timestamp(int(novoNome))
+                    data = toDict(data)
+                    novoNome = f"{diretorio}/NO{data['ano']}{data['mes']}{data['dia']}-{arquivo.split('-')[1]}-{data['hora']}{data['minuto']}{data['segundo']}.csv"
+                    os.replace(arquivo, novoNome)
 
 
     # Movimentacao

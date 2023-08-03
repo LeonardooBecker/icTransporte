@@ -10,3 +10,5 @@ def listaPastas(diretorio):
                 elementos.append(elem)
 
     return elementos
+    
+print(listaPastas("./"))
